@@ -3,6 +3,8 @@
 #include <string.h>
 #include <stdlib.h>
 
+int* sorted(int* , int);
+
 int main(int argc, char* argv[]){
 
     FILE* fin;
@@ -34,13 +36,15 @@ int main(int argc, char* argv[]){
     
     fclose(fin);
 
-    int max=arr[0];
-    for(int i=1; i < nnums; i++){
-        if(arr[i] > max) max = arr[i];
-    }
 
-    printf("%d\n",max);
+    int* srt = sorted(arr,ind);
+
+    int sum=0;
+    for(int i=0; i<3; i++) sum += srt[ind-i-1];
+
+    printf("%d\n",sum);
 
     free(arr);
+    free(srt);
 
 }
