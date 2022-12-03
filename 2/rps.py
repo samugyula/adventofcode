@@ -23,6 +23,7 @@ def parse(line):
     return(l[0],l[1])
 
 res = sum([result(*parse(line)) for line in open('data.txt','r')])
+print(res)
 
 def result2(in1,inres):
     i1=getind(in1,fc)
