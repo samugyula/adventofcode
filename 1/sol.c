@@ -42,6 +42,7 @@ int main(int argc, char* argv[]){
     int sum=0;
     for(int i=0; i<3; i++) sum += srt[ind-i-1];
 
+    printf("%d\n",srt[ind-1]);
     printf("%d\n",sum);
 
     free(arr);
