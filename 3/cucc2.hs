@@ -1,12 +1,15 @@
 import Data.List
+import System.IO
 
 main = do  
-    contents <- getContents  
+    handle <- openFile "data.txt" ReadMode
+    contents <- hGetContents handle
     let 
         fileLines = lines contents
         groupList = groups fileLines
         sumPrior = sum $ getPrior $ map sects groupList
     putStr $  show sumPrior ++ "\n"
+    hClose handle
 
 groups :: [String] -> [(String, String, String)]
 groups (x:y:z:lines) = (x, y, z) : (groups lines)
