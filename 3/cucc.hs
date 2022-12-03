@@ -1,13 +1,16 @@
 import Data.List
+import System.IO
 
 main = do  
-    contents <- getContents  
+    handle <- openFile "data.txt" ReadMode
+    contents <- hGetContents handle
     let 
         fileLines = lines contents
         halvesList = halves fileLines
         sectsList = sects halvesList
         prList = getPrior sectsList
     putStr $ (show (sum prList)) ++ "\n"
+    hClose handle
   
 lhalf :: String -> Int
 lhalf str = (length str) `div` 2
