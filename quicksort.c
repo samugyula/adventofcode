@@ -1,13 +1,19 @@
-#ifndef QUICKSORT
-#define QUICKSORT
 #include <stdlib.h>
-#include <stdio.h>
+#include "quicksort.h"
 
-int* sorted(int* unsorted, int len){
+void sort_part(int* srt, int* part, int len, int shift){
+    if(len > 0) {
+        int* res = sort(part,len);
+        for(int i=0; i < len; i++) srt[i+shift] = res[i];
+        free(res);
+    }
+}
+
+int* sort(int* unsorted, int len){
 
     int* srt = malloc(sizeof(int)*len);
 
-    if(len==1){
+    if(len == 1){
         srt[0] = unsorted[0];
         return srt;
     }
@@ -16,29 +22,22 @@ int* sorted(int* unsorted, int len){
     int* smaller = malloc(sizeof(int)*len);
     int* bigger  = malloc(sizeof(int)*len);
     int i = 0, j = 0;
-    for(int ii=1;ii<len;ii++){
-        if(unsorted[ii] >= pivot) bigger[i++]  = unsorted[ii];
-        if(unsorted[ii] <  pivot) smaller[j++] = unsorted[ii];
+    for(int ii = 1; ii < len; ii++){
+        if(unsorted[ii] >= pivot) {
+            bigger[i++]  = unsorted[ii];
+        } else {
+            smaller[j++] = unsorted[ii];
+        }
     }
 
-    if(j>0) {
-        int* res_smaller = sorted(smaller,j);
-        for(int jj=0; jj<j; jj++) srt[jj] = res_smaller[jj];
-        free(res_smaller);
-    }
+    sort_part(srt, smaller, j, 0);
 
     srt[j] = pivot;
 
-    if(i>0) {
-        int* res_bigger =  sorted(bigger, i);
-        for(int ii=0; ii<i; ii++) srt[ii+j+1] = res_bigger[ii];
-        free(res_bigger);
-    }
+    sort_part(srt, bigger, i, j + 1);
 
     free(smaller);
     free(bigger);
 
     return srt;
 }
-
-#endif

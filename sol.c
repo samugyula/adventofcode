@@ -2,8 +2,8 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include "quicksort.h"
 
-int* sorted(int* , int);
 
 int main(int argc, char* argv[]){
 
@@ -37,7 +37,7 @@ int main(int argc, char* argv[]){
     fclose(fin);
 
 
-    int* srt = sorted(arr,ind);
+    int* srt = sort(arr,ind);
 
     int sum=0;
     for(int i=0; i<3; i++) sum += srt[ind-i-1];
