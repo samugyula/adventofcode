@@ -1,0 +1,4 @@
+lx -> a
+lw OR lv -> lx
+3 LSHIFT 1 -> lw
+1 AND 15 -> lv
