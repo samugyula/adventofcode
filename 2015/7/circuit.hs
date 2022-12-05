@@ -16,6 +16,7 @@ main = do
         reducedNewDict = reduceAll newDict 0
         signal2 = (getVal "a" reducedNewDict) !! 0
     putStr $ signal1 ++ "\n" ++ signal2 ++ "\n"
+    hClose handle
 
 type Database = [([String],String)]
 
