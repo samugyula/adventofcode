@@ -10,11 +10,14 @@ main = do
         stackNums = getStackNums fileLines
         store = map (getStack storeLines) stackNums
         moveLines = tail $ dropWhile (/="") fileLines
-        moveList = moves moveLines
+        moveList = getMoves moveLines
+        -- one crate per move
         finalStore = executeMoves False store moveList
         topCrates = map head finalStore
+        -- all crates in one move
         finalStore2 = executeMoves True store moveList
         topCrates2 = map head finalStore2
+
     putStr $ topCrates ++ "\n" ++ topCrates2 ++ "\n"    
     hClose handle
 
@@ -70,11 +73,12 @@ putOnSeveral (crates,store) n = newstore
         newstack = crates ++ ( store !! (n-1) )
         newstore = take (n-1) store ++ [newstack] ++ drop n store
 
-moves :: [String] -> [(Int,Int,Int)]
-moves [] = []
-moves (x:xs) = case (words x) of
-    ("move":num:"from":from:"to":to:[]) -> case (readIntLine (num++" "++from++" "++to)) of
-                                             (n1:n2:n3:[]) -> (n1,n2,n3) : moves xs
+getMoves :: [String] -> [(Int,Int,Int)]
+getMoves [] = []
+getMoves (x:xs) = case (words x) of
+    ("move":num:"from":from:"to":to:[]) ->
+        case (readIntLine (num ++ " " ++ from ++ " " ++ to)) of
+            (n1:n2:n3:[]) -> (n1,n2,n3) : getMoves xs
 
 makeOneMove :: [String] -> (Int,Int) -> [String]
 makeOneMove store (from,to) = putOn (takeOff store from) to
