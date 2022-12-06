@@ -1,14 +1,24 @@
-import System.IO.Unsafe
+import System.IO
 
-contents = unsafePerformIO . readFile $ "data.txt"
+main = do
+    handle <- openFile "data.txt" ReadMode
+    contents <- hGetContents handle
+    let
+        fileLines = lines contents
+        db = makeDatabase fileLines
+        names = getNames db
+        distances = map (calcDistance db 2503) names
+        maxD = maximum distances
+        initLeaderBoard = distancesAtTime db names 0
+        finalRes = leaderBoardFinal db initLeaderBoard 0 2503
+        maxP = maximum [ point | (name,point) <- finalRes ]
+    putStr $ result [maxD,maxP]
+    hClose handle
 
-fileLines = lines contents
+                                                                                                                                 
+result :: Show a => [a] -> String
+result xs = unlines $ map show xs
 
-db = makeDatabase fileLines
-
-names = getNames db
-
-distances = map (calcDistance db 2503) names
 
 type Database = [(String,Int,Int,Int)]
 type Leaderboard = [(String,Int)]
@@ -43,8 +53,6 @@ getDistance ((n,d):xs) name
     | n == name = d
     | otherwise = getDistance xs name
 
-initLeaderBoard :: Leaderboard
-initLeaderBoard = distancesAtTime db names 0
 
 leaderBoardAtTime :: Database -> Leaderboard -> Int -> Leaderboard
 leaderBoardAtTime _ [] _ = []
@@ -60,5 +68,3 @@ leaderBoardFinal db board n end
     | n == end = board
     | otherwise = leaderBoardFinal db (leaderBoardAtTime db board (n+1)) (n+1) end
 
-finalRes = leaderBoardFinal db initLeaderBoard 0 2503
-maxP = maximum [ point | (name,point) <- finalRes ]
