@@ -22,9 +22,9 @@ int main(){
     lights = readIn();
     if(lights==NULL) {return -1;}
     lights[0][0]  ='#';
-    lights[0][99] ='#';
-    lights[99][0] ='#';
-    lights[99][99]='#';
+    lights[0][SIZE - 1] ='#';
+    lights[SIZE - 1][0] ='#';
+    lights[SIZE - 1][SIZE - 1]='#';
 
     res(lights);
     if(lights==NULL) {return -1;}
@@ -56,7 +56,10 @@ char** changeLights(char **lights, bool edgeStays){
     if(newLights==NULL) {return NULL;}
     for(int i=0; i<SIZE; i++){
         for(int j=0; j<SIZE; j++){
-            if(edgeStays && (i == 0 && j == 0 || i == 99 && j == 0 || i == 0 && j == 99 || i == 99 && j == 99)){
+            if(edgeStays && (i == 0 && j == 0 || 
+                             i == SIZE - 1 && j == 0 || 
+                             i == 0 && j == SIZE - 1 || 
+                             i == SIZE - 1 && j == SIZE - 1)){
                 newLights[i][j] = '#';
                 continue;
             }
