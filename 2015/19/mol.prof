@@ -1,0 +1,50 @@
+	Wed Dec  7 22:14 2022 Time and Allocation Profiling Report  (Final)
+
+	   mol +RTS -p -RTS
+
+	total time  =       13.63 secs   (13634 ticks @ 1000 us, 1 processor)
+	total alloc = 482,081,040 bytes  (excludes profiling overheads)
+
+COST CENTRE   MODULE  %time %alloc
+
+recMakeSubs   Main     96.0    1.3
+allSubs       Main      2.5   58.2
+makeSub       Main      1.0   30.9
+makeHeadTail  Main      0.1    4.3
+tokenize      Main      0.1    2.0
+tokenize.nUp  Main      0.0    1.1
+allSubsInList Main      0.0    1.2
+
+
+                                                                individual     inherited
+COST CENTRE         MODULE                    no.     entries  %time %alloc   %time %alloc
+
+MAIN                MAIN                       44           0    0.0    0.0   100.0  100.0
+ CAF                Main                       87           0    0.0    0.0   100.0  100.0
+  main              Main                       88           1    0.0    0.0   100.0  100.0
+   main.replLines   Main                      100           1    0.0    0.0     0.0    0.0
+   main.replList    Main                       98           1    0.0    0.0     0.0    0.0
+    makeReplList    Main                       99          44    0.0    0.0     0.0    0.0
+     tokenize       Main                      103         177    0.0    0.0     0.0    0.0
+      tokenize.nUp  Main                      106         124    0.0    0.0     0.0    0.0
+      tokenize.t    Main                      105         134    0.0    0.0     0.0    0.0
+   main.fileLines   Main                       93           1    0.0    0.0     0.0    0.0
+   main.molLine     Main                       92           1    0.0    0.0     0.0    0.0
+   main.res         Main                       90           1    0.0    0.0   100.0   99.9
+    recMakeSubs     Main                       91          15   96.0    1.3   100.0   99.9
+     recMakeSubs.\  Main                      104       58222    0.2    1.0     0.2    1.0
+     allSubsInList  Main                       94        4591    0.0    1.2     3.8   97.7
+      tokenize      Main                       97       46373    0.1    2.0     0.1    3.1
+       tokenize.nUp Main                      107       38970    0.0    1.1     0.0    1.1
+       tokenize.t   Main                      102       41796    0.0    0.0     0.0    0.0
+      allSubs       Main                       95        4577    2.5   58.2     3.7   93.5
+       makeSub      Main                      101     1915686    1.0   30.9     1.0   30.9
+       makeHeadTail Main                       96        4577    0.1    4.3     0.1    4.3
+   result           Main                       89           1    0.0    0.0     0.0    0.0
+ CAF                GHC.IO.Handle.FD           82           0    0.0    0.0     0.0    0.0
+ CAF                GHC.IO.Handle.Internals    81           0    0.0    0.0     0.0    0.0
+ CAF                GHC.Conc.Signal            77           0    0.0    0.0     0.0    0.0
+ CAF                GHC.IO.Encoding            75           0    0.0    0.0     0.0    0.0
+ CAF                GHC.Conc.Sync              68           0    0.0    0.0     0.0    0.0
+ CAF                GHC.IO.FD                  66           0    0.0    0.0     0.0    0.0
+ CAF                GHC.IO.Encoding.Iconv      61           0    0.0    0.0     0.0    0.0

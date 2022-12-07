@@ -3,7 +3,7 @@ import Data.Char
 import System.IO
 
 main = do
-    handle <- openFile "data2.txt" ReadMode
+    handle <- openFile "data.txt" ReadMode
     contents <- hGetContents handle
     let
         fileLines = lines contents
@@ -23,10 +23,10 @@ result :: Show a => [a] -> String
 result xs = unlines $ map show xs
 
 
-makeReplList :: [String] -> [(String,String)]
+makeReplList :: [String] -> [(String,[String])]
 makeReplList [] = []
 makeReplList (line:xs) =  case (words line) of
-    (from:_:to:[]) -> (from,to) : makeReplList xs
+    (from:_:to:[]) -> (from,tokenize to) : makeReplList xs
 
 tokenize :: String -> [String]
 tokenize "" = []
@@ -35,26 +35,22 @@ tokenize str = (head str : takeWhile nUp t) : (tokenize $ dropWhile nUp $ t)
         nUp = not . isUpper
         t = tail str
 
-makeHeadTail :: String -> [(String,String)]
-makeHeadTail str = [(concat (take n syms), concat (drop n syms)) | (n,sym) <- zip [0..] syms]
-    where
-        syms = tokenize str
+makeHeadTail :: [String] -> [([String],[String])]
+makeHeadTail syms = [(take n syms, drop n syms) | (n,sym) <- zip [0..] syms]
 
-makeSub :: (String,String) -> (String,String) -> String
-makeSub (h,t) (sym,sub) = case (head syms) of
-    x | x == sym -> h ++ sub ++ (concat $ tail syms)
-    _ -> ""
-    where
-        syms = tokenize t
+makeSub :: ([String],[String]) -> (String,[String]) -> [String]
+makeSub (h,t) (sym,sub) = case (head t) of
+    x | x == sym -> h ++ sub ++ (tail t)
+    _ -> [""]
 
-allSubs :: String -> [(String,String)] -> [String]
-allSubs str replList = nub [ makeSub ht sub | ht <- makeHeadTail str, sub <- replList, (makeSub ht sub) /= "" ]
+allSubs :: [String] -> [(String,[String])] -> [String]
+allSubs syms replList = nub [ concat (makeSub ht sub) | ht <- makeHeadTail syms, sub <- replList, (makeSub ht sub) /= [""] ]
 
-allSubsInList :: [String] -> [(String,String)] -> [String]   
+allSubsInList :: [String] -> [(String,[String])] -> [String]   
 allSubsInList [] _ = []
-allSubsInList (x:xs) replList = allSubs x replList ++ (allSubsInList xs replList)
+allSubsInList (x:xs) replList = allSubs (tokenize x) replList ++ (allSubsInList xs replList)
 
-recMakeSubs :: String -> [(String,String)] -> [String] -> Int -> (Int,[String])
+recMakeSubs :: String -> [(String,[String])] -> [String] -> Int -> (Int,[String])
 recMakeSubs _ _ [] _ = error $ "Not found"
 recMakeSubs mol replList xs n
     | any (==mol) xs = (n, xs)
