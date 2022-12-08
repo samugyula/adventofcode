@@ -6,11 +6,13 @@ main = do
     let
         fileLines = lines contents
         lights = lightsMap 1 fileLines
+        newLights = changeState lights lights
+        count = length [ch | (_,ch) <- newLights, ch == '#' ]
         countOn = getRes lights
         lights2 = changeLights lights [(1,1),(1,100),(100,1),(100,100)]
         countOn2 = getRes lights2
     
-    putStr $ result [countOn,countOn2]
+    putStr $ result [count]
     hClose handle
                                                                                                                                  
 result :: Show a => [a] -> String
