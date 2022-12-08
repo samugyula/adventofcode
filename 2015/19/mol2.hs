@@ -109,7 +109,7 @@ backtrackAll (x:xs) list = backtrack x list ++ (backtrackAll xs list)
 recBacktrackAll :: [([String],[String])] -> Subs -> Int -> [(Int,Int,Int)]
 recBacktrackAll xs list n 
     | xs == [] = error $ "Not found"
---  | n == 7 = [cucc]
+    | n == 33 = [cucc]
     | all (==([""],["e"])) xs = [cucc]
     | otherwise = cucc : recBacktrackAll res list (n+1)
     where 

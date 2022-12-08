@@ -1,0 +1,66 @@
+	Thu Dec  8 19:07 2022 Time and Allocation Profiling Report  (Final)
+
+	   mol2 +RTS -p -N4 -RTS
+
+	total time  =       28.78 secs   (115133 ticks @ 1000 us, 4 processors)
+	total alloc = 14,591,186,232 bytes  (excludes profiling overheads)
+
+COST CENTRE         MODULE    %time %alloc
+
+ordNub.go           Main       75.1    1.3
+getMatching         Main       18.7    3.6
+backtrack.rest      Main        1.6   44.3
+backtrack.subThem   Main        1.2   33.4
+findMatch           Main        0.8    2.8
+findMatch.initElems Main        0.3    7.5
+findAllMatch        Main        0.3    2.8
+findAllMatch.rest   Main        0.3    2.6
+backtrack           Main        0.1    1.2
+
+
+                                                                          individual     inherited
+COST CENTRE                   MODULE                    no.     entries  %time %alloc   %time %alloc
+
+MAIN                          MAIN                       45           0    0.0    0.0   100.0  100.0
+ CAF                          Main                       89           0    0.0    0.0   100.0  100.0
+  main                        Main                       90           1    0.0    0.0   100.0  100.0
+   main.replLines             Main                      114           1    0.0    0.0     0.0    0.0
+   main.replList              Main                      112           1    0.0    0.0     0.0    0.0
+    makeReplList              Main                      113          44    0.0    0.0     0.0    0.0
+     tokenize                 Main                      116         117    0.0    0.0     0.0    0.0
+      tokenize.nUp            Main                      118          67    0.0    0.0     0.0    0.0
+      tokenize.t              Main                      117          74    0.0    0.0     0.0    0.0
+   main.invReplList           Main                      110           1    0.0    0.0     0.0    0.0
+    makeInvertedReplList      Main                      111          44    0.0    0.0     0.0    0.0
+   main.fileLines             Main                       97           1    0.0    0.0     0.0    0.0
+   main.molLine               Main                       96           1    0.0    0.0     0.0    0.0
+   main.elems                 Main                       94           1    0.0    0.0     0.0    0.0
+    tokenize                  Main                       95         275    0.0    0.0     0.0    0.0
+     tokenize.nUp             Main                      100         274    0.0    0.0     0.0    0.0
+     tokenize.t               Main                       99         274    0.0    0.0     0.0    0.0
+   main.res                   Main                       92           1    0.0    0.0   100.0  100.0
+    recBacktrackAll           Main                       93          34    0.0    0.0   100.0  100.0
+     recBacktrackAll.minL     Main                      123          33    0.6    0.2     0.6    0.2
+     recBacktrackAll.res1     Main                      102          33    0.0    0.0    98.4   99.6
+      backtrackAll            Main                      105        5972    0.0    0.3    23.4   98.3
+       backtrack              Main                      106     1175022    0.1    1.2    23.3   98.0
+        backtrack.subThem     Main                      121     1631426    1.2   33.4     1.2   33.4
+        backtrack.rest        Main                      120     1169083    1.6   44.3     1.6   44.3
+        findAllMatch          Main                      107    10521747    0.3    2.8    20.4   19.2
+         findAllMatch.rest    Main                      119     9352664    0.3    2.6     0.3    2.6
+         findMatch            Main                      108     9352664    0.8    2.8    19.9   13.9
+          findMatch.initElems Main                      115     9352664    0.3    7.5     0.3    7.5
+          getMatching         Main                      109     9352664   18.7    3.6    18.7    3.6
+      ordNub                  Main                      103          33    0.0    0.0    75.1    1.3
+       ordNub.go              Main                      104      815746   75.1    1.3    75.1    1.3
+     recBacktrackAll.res      Main                      101          33    0.0    0.0     0.6    0.1
+      recBacktrackAll.res.\   Main                      122      206002    0.6    0.1     0.6    0.1
+     recBacktrackAll.cucc     Main                       98          34    0.3    0.1     0.3    0.1
+   result                     Main                       91           1    0.0    0.0     0.0    0.0
+ CAF                          GHC.Event.Thread           85           0    0.0    0.0     0.0    0.0
+ CAF                          GHC.IO.Handle.FD           84           0    0.0    0.0     0.0    0.0
+ CAF                          GHC.IO.Handle.Internals    83           0    0.0    0.0     0.0    0.0
+ CAF                          GHC.Conc.Signal            79           0    0.0    0.0     0.0    0.0
+ CAF                          GHC.IO.Encoding            77           0    0.0    0.0     0.0    0.0
+ CAF                          GHC.IO.FD                  68           0    0.0    0.0     0.0    0.0
+ CAF                          GHC.IO.Encoding.Iconv      63           0    0.0    0.0     0.0    0.0
