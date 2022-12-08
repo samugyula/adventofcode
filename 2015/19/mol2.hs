@@ -68,7 +68,6 @@ findMatch elems list n = case (getMatching list initElems) of
                     _ -> Nothing --findMatch elems list (n+1)
     where
         initElems = take n elems
---TODO: igy most csak az elso match-et adja vissza
 
 type Tup = ([String],[String])
 
