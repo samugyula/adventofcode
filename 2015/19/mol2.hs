@@ -4,6 +4,7 @@ import Data.Char
 import Data.Maybe (catMaybes)
 import System.IO
 import System.IO.Unsafe
+
 -- Taken From Yi
 ordNub :: (Ord a) => [a] -> [a]
 ordNub l = go empty l
@@ -24,28 +25,15 @@ main = do
         elems = tokenize molLine
 
         replList = makeReplList replLines
-        invReplList = makeInvertedReplList replList
-        res' = reduceAll [elems] invReplList
-        res'' = reduceAll res' invReplList
-        res''' = reduceAll res'' invReplList
-        res'''' = reduceAll res''' invReplList
-        res''''' = reduceAll res'''' invReplList
-        res'''''' = reduceAll res''''' invReplList
-        res''''''' = reduceAll res'''''' invReplList
-        res'''''''' = reduceAll res''''''' invReplList
-        res''''''''' = reduceAll res'''''''' invReplList
-        res = reduceAll res''''''''' invReplList
-{-
-        res''''''' = reduceAll res'''''' invReplList
-        res'''''''' = reduceAll res''''''' invReplList
-        res''''''''' = reduceAll res'''''''' invReplList
-        res = reduceAll res''''''''' invReplList
--}
-        minL = minimum [ length x | x <- res ]
-        minstr = [y | y <- res, (length y) == minL]
+        allSubs = [((fromIntegral n :: Int),t) | (n,x) <- zip [0..] elems, t@(y1,y2) <- replList, [x] == y1]
+        res1 = length $ nub $ subAllForward elems allSubs
 
---  putStr $ (result res) ++ (result [minstr])
-    putStr $ result [minstr]
+        invReplList = makeInvertedReplList replList
+
+        res2' = recReduceAll [(0,elems)] invReplList
+        res2 = minimum [n+1 | (n,x) <- res2']
+
+    putStr $ result [res1,res2]
     hClose handle
 
                                                                                                                                  
@@ -65,25 +53,24 @@ list = makeInvertedReplList replList
 type Sub = ([String],String)
 type Subs = [([String],String)]
 
-makeReplList :: [String] -> [(String,[String])]
+makeReplList :: [String] -> Subs
 makeReplList [] = []
 makeReplList (line:xs) =  case (words line) of
-    (from:_:to:[]) -> (from,tokenize to) : makeReplList xs
+    (from:_:to:[]) -> ([from],to) : makeReplList xs
 
-makeInvertedReplList :: [(String,[String])] -> Subs
+makeInvertedReplList :: Subs -> Subs
 makeInvertedReplList [] = []
-makeInvertedReplList ((x1,x2):xs) = (x2,x1) : makeInvertedReplList xs
+makeInvertedReplList ((x1,x2):xs) = (tokenize x2,head x1) : makeInvertedReplList xs
 
 getMatching :: Subs -> [String] -> Subs
 getMatching list elems = [(x,y) | (x,y) <- list, isPrefixOf elems x]
 
 findMatch :: [String] -> Subs -> Int -> Maybe Sub
---findMatch _ _ 9 = Nothing
 findMatch elems list n = case (getMatching list initElems) of
     [] -> Nothing
     x@((x1,x2):xs) -> case([(x1,x2) | (x1,x2) <- x, x1 == initElems]) of
                     (y:[]) -> Just y
-                    _ -> Nothing --findMatch elems list (n+1)
+                    _ -> Nothing 
     where
         initElems = take n elems
 
@@ -134,31 +121,6 @@ makeOneSubList (x@(n1,(x1,_)):y@(n2,_):xs)
     | n1 + (length x1) <= n2 = x : (makeOneSubList (y:xs))
     | otherwise = x : (makeOneSubList $ tillConflict (n1 + (length x1)) xs)
 
-{-
-isConflictPoint :: NSubs -> Bool
-isConflictPoint ((n1,(x1,x2)):xs) = length (tillConflict (n1 + (length x1)) xs) < (length xs)
-
-hasConflict :: NSubs -> Bool
-hasConflict [] = False
-hasConflict l@((n1,(x1,x2)):xs) 
-    | isConflictPoint l = True
-    | otherwise = hasConflict xs
-
-removeFirstConflict :: NSubs -> NSubs
-removeFirstConflict [] = []
-removeFirstConflict l@(x@(n1,(x1,x2)):xs)
-    | isConflictPoint l = xs
-    | otherwise = x : removeFirstConflict xs
-
-makeSubLists :: NSubs -> [NSubs]
-makeSubLists subs = res
-    where
-        one = makeOneSubList subs
-        res
-            | hasConflict subs = one : ( makeSubLists $ removeFirstConflict subs )
-            | otherwise = [one]
--}
-
 removeSub :: NSubs -> NSub -> NSubs
 removeSub (x:xs) sub
     | x == sub = xs
@@ -180,54 +142,28 @@ doSubs elems@(x:xs) n m l@((p,(s1,s2)):ys)
     | otherwise = (frest2, x : srest2)
     where
         nsub = length s1
-        (frest1,srest1) = doSubs (drop nsub elems) (n+nsub) (m + 1) ys
+        (frest1,srest1) 
+            | ys /= [] && (fst (head ys)) == p = doSubs elems n m ys
+            | otherwise = doSubs (drop nsub elems) (n+nsub) (m + 1) ys
         (frest2,srest2) = doSubs xs (n+1) m l
 
-cucc = allPossibleSubs list elems
-kek = makeSubLists cucc cucc
-res1 = ordNub $ map (doSubs elems 0 0) kek
-
-cucc2 = map (allPossibleSubs list) (map snd res1)
-kek2 = map (\x -> makeSubLists x x) cucc2
-res2 = map (\(y,z) -> ordNub $ map (doSubs y 0 0) z) $ zip (map snd res1) kek2
-
---newstrs = ordNub [hm |  hmm <- res2, (n,hm) <- hmm]
-
-reduceAll :: [[String]] -> Subs -> [[String]]
+reduceAll :: [(Int,[String])] -> Subs -> [(Int,[String])]
 reduceAll strs list = newstrs
     where
-        cucc = map (allPossibleSubs list) strs
+        juststrs = map snd strs
+        cucc = map (allPossibleSubs list) juststrs
         kek = map (\x -> makeSubLists x x) cucc
-        res = map (\(y,z) -> ordNub $ map (doSubs y 0 0) z) $ zip strs kek
-        newstrs = ordNub [hm |  hmm <- res, (n,hm) <- hmm]
-{-
-cucc3 = map (allPossibleSubs list) (map snd res2)
-kek3 = map (\x -> makeSubLists x x) cucc3
-res3 = map (\(y,z) -> ordNub $ map (doSubs y 0 0) z) $ zip (map snd res2) kek3
--}
+        res = map (\((m,y),z) -> ordNub $ map (doSubs y 0 m) z) $ zip strs kek
+        newstrs = ordNub [hm |  hmm <- res, hm <- hmm]
 
-{-
-prob :: NSubs -> [NSubs]
-prob [x] = [[x]]
-prob (x@(n1,(x1,_)):y@(n2,_):xs)
-    | n1 + (length x1) <= n2 = [x : l1]
-    | otherwise = [(x : h2) : (y : l2)]
-    where
-        l1 = last $ prob (y:xs)
-        l2 = last $ prob xs
-        h2 = head $ prob xs
-data Tree a = Leaf a | Node1 (Tree a) | Node2 (Tree a) (Tree a) deriving (Show)
+eSubs :: Subs -> [[String]]
+eSubs list = [ x | (x,"e") <- list]
 
-prob :: NSubs -> NSubs -> NSubs -> Tree NSubs
-prob [] subs allsubs = Leaf $ makeOneSubList subs
-prob [x] subs allsubs = Leaf $ makeOneSubList subs
-prob (x@(n1,(x1,_)):y@(n2,_):xs) subs allsubs
-    | n1 + (length x1) <= n2 = Node1 (prob (y:xs) subs allsubs)
-    | otherwise = Node2 (prob xs (removeSub allsubs x) allsubs) (prob xs (removeSub allsubs y) allsubs)
-
-getLists :: Tree NSubs -> [NSubs]
-getLists (Leaf x) = [x]
-getLists (Node1 l) = [] ++ (getLists l)
-getLists (Node2 l r) = [] ++ (getLists l) ++ (getLists r)
--}
+recReduceAll :: [(Int,[String])] -> Subs -> [(Int,[String])]
+recReduceAll strs list
+    | any (\x -> x `elem` (eSubs list)) (map snd strs) = [t | t@(n,x) <- strs, x `elem` (eSubs list)]
+    | otherwise = recReduceAll (reduceAll strs list) list
         
+subAllForward :: [String] -> NSubs -> [[String]]
+subAllForward elems [] = []
+subAllForward elems ((n,(s1,s2)):xs) = ((take n elems) ++ (tokenize s2) ++ (drop (n+1) elems)) : (subAllForward elems xs)
