@@ -1,9 +1,7 @@
-import Data.Set (member, empty, insert)
+import Data.Set (insert,member,empty)
 import Data.List hiding (insert)
 import Data.Char
-import Data.Maybe (catMaybes)
 import System.IO
-import System.IO.Unsafe
 
 -- Taken From Yi
 ordNub :: (Ord a) => [a] -> [a]
@@ -39,16 +37,6 @@ main = do
                                                                                                                                  
 result :: Show a => [a] -> String
 result xs = unlines $ map show xs
-
-contents = unsafePerformIO . readFile $ "data.txt"
-fileLines = lines contents
-
-replLines = takeWhile (/="") fileLines
-molLine = last fileLines
-elems = tokenize molLine
-
-replList = makeReplList replLines
-list = makeInvertedReplList replList
 
 type Sub = ([String],String)
 type Subs = [([String],String)]
