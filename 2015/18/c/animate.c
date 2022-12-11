@@ -1,23 +1,31 @@
+#include <unistd.h>
 #include <stdio.h>
 #include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
-#define SIZE 100
+#include <time.h>
+#define SIZE 25
 
 char** initArr();
 char** readIn();
+char** randomLights();
 int countNeighbors(char, int, int, char **);
 char** changeLights(char **, bool);
 int countLights(char **);
 void res(char **, bool);
+void printTable(char **);
+void animate(char **, bool);
 
 int main(){
 
-    char** lights = readIn();
+//  char** lights = readIn();
+    char** lights = randomLights();
     if(lights==NULL) {return -1;}
 
-    res(lights,false);
+//  res(lights,false);
+    animate(lights,false);
     if(lights==NULL) {return -1;}
+    return 0;
 
     lights = readIn();
     if(lights==NULL) {return -1;}
@@ -38,6 +46,27 @@ void res(char **lights, bool edgeStays){
         if(lights == NULL) {return;};
     }
     printf("%d\n",countLights(lights));
+    printTable(lights);
+    free(lights);
+}
+
+void printTable(char **lights){
+    for(int i = 0; i < SIZE; i++){
+        for(int j = 0; j < SIZE; j++){
+            printf("%c ",lights[i][j]);
+        }
+        printf("\n");
+    }
+    for(int i=0; i<5; i++) printf("\n");
+}
+
+void animate(char **lights, bool edgeStays){
+    while(1){
+        lights = changeLights(lights, edgeStays);
+        if(lights == NULL) {return;};
+        printTable(lights);
+        usleep(5e5);
+    }
     free(lights);
 }
 
@@ -57,9 +86,9 @@ char** changeLights(char **lights, bool edgeStays){
     for(int i=0; i<SIZE; i++){
         for(int j=0; j<SIZE; j++){
             if(edgeStays && ((i == 0 && j == 0) || 
-                             (i == SIZE - 1 && j == 0) || 
-                             (i == 0 && j == SIZE - 1) || 
-                             (i == SIZE - 1 && j == SIZE - 1))){
+                             (i == (SIZE - 1) && j == 0) || 
+                             (i == 0 && j == (SIZE - 1)) || 
+                             (i == (SIZE - 1) && j == (SIZE - 1)))){
                 newLights[i][j] = '#';
                 continue;
             }
@@ -122,7 +151,7 @@ char** readIn(){
     char** arr = initArr();
 
     FILE* fin;
-    char filename[] = "data.txt";
+    char filename[] = "data2.txt";
     fin = fopen(filename,"r");
     if(fin == NULL){ printf("File not found: %s\n", filename); return arr; }
 
@@ -144,3 +173,23 @@ char** readIn(){
 
     return arr;
 }
+
+char** randomLights(){
+    char** arr = initArr();
+
+    srand(time(NULL));
+
+    for(int i = 0; i < SIZE; i++){
+        for(int j = 0; j < SIZE; j++){
+            if((rand() % 100 + 1) > 50){
+                arr[i][j] = '#';
+            } else {
+                arr[i][j] = '.';
+            }
+        }
+    }
+
+    return arr;
+}
+
+    
