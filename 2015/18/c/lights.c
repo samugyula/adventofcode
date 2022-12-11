@@ -9,14 +9,14 @@ char** readIn();
 int countNeighbors(char, int, int, char **);
 char** changeLights(char **, bool);
 int countLights(char **);
-void res(char **);
+void res(char **, bool);
 
 int main(){
 
     char** lights = readIn();
     if(lights==NULL) {return -1;}
 
-    res(lights);
+    res(lights,false);
     if(lights==NULL) {return -1;}
 
     lights = readIn();
@@ -26,15 +26,15 @@ int main(){
     lights[SIZE - 1][0] ='#';
     lights[SIZE - 1][SIZE - 1]='#';
 
-    res(lights);
+    res(lights,true);
     if(lights==NULL) {return -1;}
 
     return 0;
 }
 
-void res(char **lights){
+void res(char **lights, bool edgeStays){
     for(int i=0; i<100; i++) {
-        lights = changeLights(lights, true);
+        lights = changeLights(lights, edgeStays);
         if(lights == NULL) {return;};
     }
     printf("%d\n",countLights(lights));
@@ -56,10 +56,10 @@ char** changeLights(char **lights, bool edgeStays){
     if(newLights==NULL) {return NULL;}
     for(int i=0; i<SIZE; i++){
         for(int j=0; j<SIZE; j++){
-            if(edgeStays && (i == 0 && j == 0 || 
-                             i == SIZE - 1 && j == 0 || 
-                             i == 0 && j == SIZE - 1 || 
-                             i == SIZE - 1 && j == SIZE - 1)){
+            if(edgeStays && ((i == 0 && j == 0) || 
+                             (i == SIZE - 1 && j == 0) || 
+                             (i == 0 && j == SIZE - 1) || 
+                             (i == SIZE - 1 && j == SIZE - 1))){
                 newLights[i][j] = '#';
                 continue;
             }
