@@ -44,8 +44,6 @@ regAtTime l t = countSig l 0 1
             | otherwise = ss
             
 
-cycs = [fromIntegral i :: Int | i <- [20,60..220]]
-
 makeStr :: Steps -> Int -> String
 makeStr _ 241 = ""
 makeStr steps t 
