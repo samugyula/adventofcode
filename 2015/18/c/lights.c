@@ -124,7 +124,7 @@ char** readIn(){
     FILE* fin;
     char filename[] = "data.txt";
     fin = fopen(filename,"r");
-    if(fin == NULL){ printf("File not found: %s\n", filename); return arr; }
+    if(fin == NULL){ printf("File not found: %s\n", filename); return NULL; }
 
 
     char buffer[SIZE+1];
