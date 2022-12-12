@@ -19,30 +19,12 @@ main = do
         tailsteps2 = map last eval2
         res2 = length $ nub tailsteps2
 
-{-
-        str = [f x y | y <- [1..dim], x <- [1..dim]]
-            where
-                f x y
-                    | any (==(x,y)) t = '#'
-                    | otherwise = '.'
-
-        lns = reverse [ take dim (drop ((n-1)*dim) str) | n <- [1..dim] ]
-
-        ulns = unlines lns
--}
-
     putStr $ result [res,res2]
     hClose handle
 
                                                                                                                                  
 result :: Show a => [a] -> String
 result xs = unlines $ map show xs
-
-
-contents = unsafePerformIO . readFile $ "data.txt"
-
-fileLines = lines contents
-
 
 type Move = (Char,Int)
 type Moves = [(Char,Int)]
