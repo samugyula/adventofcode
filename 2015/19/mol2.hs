@@ -139,10 +139,10 @@ reduceAll :: [(Int,[String])] -> Subs -> [(Int,[String])]
 reduceAll strs list = newstrs
     where
         juststrs = map snd strs
-        cucc = map (allPossibleSubs list) juststrs
-        kek = map (\x -> makeSubLists x x) cucc
-        res = map (\((m,y),z) -> ordNub $ map (doSubs y 0 m) z) $ zip strs kek
-        newstrs = ordNub [hm |  hmm <- res, hm <- hmm]
+        sublist' = map (allPossibleSubs list) juststrs
+        sublist = map (\x -> makeSubLists x x) sublist'
+        res = map (\((m,y),z) -> ordNub $ map (doSubs y 0 m) z) $ zip strs sublist
+        newstrs = ordNub [sub |  from1 <- res, sub <- from1]
 
 eSubs :: Subs -> [[String]]
 eSubs list = [ x | (x,"e") <- list]
