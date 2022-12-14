@@ -1,0 +1,82 @@
+	Mon Dec 12 16:58 2022 Time and Allocation Profiling Report  (Final)
+
+	   path +RTS -N4 -p -RTS
+
+	total time  =       37.56 secs   (150241 ticks @ 1000 us, 4 processors)
+	total alloc = 49,615,554,808 bytes  (excludes profiling overheads)
+
+COST CENTRE          MODULE    %time %alloc
+
+getPaths             Main       38.9    7.0
+getGoodNeighbors.ind Main       21.8    7.6
+getPaths.new         Main        8.0   39.1
+getNeighbors.lines   Main        6.0   18.4
+getNeighbors.res     Main        5.9    4.6
+getNeighbors.(...)   Main        5.2    0.0
+getPaths.difs        Main        3.9    8.2
+getNeighbors         Main        3.1    4.7
+getGoodNeighbors     Main        1.9    1.9
+getNeighbors.ids     Main        1.2    3.4
+getPaths.ns          Main        0.8    1.4
+
+
+                                                                        individual     inherited
+COST CENTRE                 MODULE                    no.     entries  %time %alloc   %time %alloc
+
+MAIN                        MAIN                       45           0    0.0    0.0   100.0  100.0
+ contents                   Main                      137           0    0.0    0.0     0.0    0.0
+ main                       Main                       91           0    0.1    0.0   100.0  100.0
+  main.p                    Main                      110           1    0.0    0.0     0.8    0.6
+   getLeafs                 Main                      111    12327158    0.8    0.6     0.8    0.6
+  main.paths                Main                       99           1    0.0    0.0    99.1   99.3
+   getPaths                 Main                      100    12327158   38.9    7.0    99.1   99.3
+    getPaths.new            Main                      134     5944400    8.0   39.1     8.0   39.1
+    getPaths.ns             Main                      133     5944400    0.8    1.4     0.8    1.4
+    getPaths.difs           Main                      131     5944400    3.9    8.2     3.9    8.2
+    getPaths.ns'            Main                      112     5944400    0.1    0.0    47.4   43.7
+     getGoodNeighbors       Main                      113     5944400    1.9    1.9    47.3   43.7
+      getGoodNeighbors.\    Main                      122    23559579    0.9    0.0    22.7    7.6
+       getGoodNeighbors.ind Main                      123    29503979   21.8    7.6    21.8    7.6
+      getNeighbors          Main                      114     5944400    3.1    4.7    22.7   34.2
+       getNeighbors.iRight  Main                      132     5944400    0.2    0.4     0.2    0.4
+       getNeighbors.iLeft   Main                      130     5944400    0.3    0.9     0.3    0.9
+       getNeighbors.iBottom Main                      129     5944400    0.3    0.9     0.3    0.9
+       getNeighbors.mx      Main                      128     5944400    0.0    0.0     0.0    0.0
+       getNeighbors.lines   Main                      121     5944400    6.0   18.4     6.0   18.4
+       getNeighbors.start   Main                      120     5944400    0.1    0.2     0.1    0.2
+       getNeighbors.(...)   Main                      119     5944400    5.2    0.0     5.2    0.0
+       getNeighbors.my      Main                      118     5944400    0.1    0.0     0.1    0.0
+       getNeighbors.iTop    Main                      117     5944400    0.2    0.8     0.2    0.8
+       getNeighbors.ids     Main                      116     5944400    1.2    3.4     1.2    3.4
+       getNeighbors.res     Main                      115    29503979    5.9    4.6     5.9    4.6
+  main.end                  Main                       97           1    0.0    0.0     0.0    0.0
+   main.end.\               Main                       98          62    0.0    0.0     0.0    0.0
+  main.grid                 Main                       93           1    0.0    0.0     0.0    0.0
+   readArr                  Read2Darr                  94           1    0.0    0.0     0.0    0.0
+    readArr.nLine           Read2Darr                  96           1    0.0    0.0     0.0    0.0
+    readArr.readArr'        Read2Darr                  95          11    0.0    0.0     0.0    0.0
+  main.fileLines            Main                       92           1    0.0    0.0     0.0    0.0
+ CAF                        Main                       88           0    0.0    0.0     0.0    0.0
+  s2                        Main                      136           1    0.0    0.0     0.0    0.0
+  s1                        Main                      135           1    0.0    0.0     0.0    0.0
+  getPaths                  Main                      124           0    0.0    0.0     0.0    0.0
+   getPaths.ns'             Main                      125           0    0.0    0.0     0.0    0.0
+    getGoodNeighbors        Main                      126           0    0.0    0.0     0.0    0.0
+     getGoodNeighbors.ind   Main                      127           0    0.0    0.0     0.0    0.0
+  contents                  Main                      107           1    0.0    0.0     0.0    0.0
+  fileLines                 Main                      106           1    0.0    0.0     0.0    0.0
+  grid                      Main                      103           1    0.0    0.0     0.0    0.0
+   readArr                  Read2Darr                 104           1    0.0    0.0     0.0    0.0
+    readArr.nLine           Read2Darr                 108           1    0.0    0.0     0.0    0.0
+    readArr.readArr'        Read2Darr                 105           1    0.0    0.0     0.0    0.0
+  (...)                     Main                      102           1    0.0    0.0     0.0    0.0
+   (...).\                  Main                      109           1    0.0    0.0     0.0    0.0
+  start                     Main                      101           1    0.0    0.0     0.0    0.0
+  main                      Main                       90           1    0.0    0.0     0.0    0.0
+ CAF                        GHC.IO.Handle.FD           85           0    0.0    0.0     0.0    0.0
+ CAF                        GHC.IO.Handle.Internals    84           0    0.0    0.0     0.0    0.0
+ CAF                        GHC.Event.Thread           83           0    0.0    0.0     0.0    0.0
+ CAF                        GHC.Conc.Signal            78           0    0.0    0.0     0.0    0.0
+ CAF                        GHC.IO.Encoding            76           0    0.0    0.0     0.0    0.0
+ CAF                        GHC.IO.FD                  67           0    0.0    0.0     0.0    0.0
+ CAF                        GHC.IO.Encoding.Iconv      60           0    0.0    0.0     0.0    0.0
