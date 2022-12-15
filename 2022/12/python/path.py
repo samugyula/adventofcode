@@ -10,8 +10,6 @@ lines = [l[:-1] for l in open("data.txt")]
 nRow = len(lines)
 nCol = len(lines[0])
 
-trf = np.zeros((nRow, nCol), dtype=np.uint8)
-
 lc = string.ascii_lowercase
 
 def getInd(c):
@@ -21,6 +19,8 @@ def getInd(c):
 
 start = 0
 end = 0
+
+trf = np.zeros((nRow, nCol), dtype=np.uint8)
 
 for i in range(nRow):
     for j in range(nCol):
