@@ -14,8 +14,7 @@ main = do
         line = 2000000
         r = rangesInLine points line
         rr = sort r
-
-        (x1res1,x2res1) = head $ getRanges rr
+        (x1res1,x2res1) = head $ getRangesReduced rr
         res1 = x2res1 - x1res1 + 1 - (beaconInLine points line)
 
         (x,y) = scan points 4000000
@@ -29,14 +28,6 @@ main = do
 result :: Show a => [a] -> String
 result xs = unlines $ map show xs
 
-
-contents = unsafePerformIO . readFile $ "data.txt"
-
-fileLines = lines contents
-
-points = readSB fileLines
-
-
 type Coords = (Int,Int)
 
 readSB :: [String] -> [(Coords,Coords)]
@@ -46,6 +37,7 @@ readSB (l:ls) = case (words l) of
                                       read (drop 2 (init yS)) :: Int),
                                      (read (drop 2 (init xB)) :: Int,
                                       read (drop 2 yB) :: Int)) : readSB ls
+
 distance :: Coords -> Coords -> Int
 distance (x1,y1) (x2,y2) = (abs (x1-x2)) + (abs (y1-y2))
 
